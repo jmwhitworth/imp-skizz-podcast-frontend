@@ -1,5 +1,5 @@
 <template>
-  <div v-if="condition" :class="classes">
+  <div v-if="condition" :class="[classes, 'z-50']">
     <div
       class="h-12 w-12 animate-spin rounded-full border-8 border-t-black"
     ></div>

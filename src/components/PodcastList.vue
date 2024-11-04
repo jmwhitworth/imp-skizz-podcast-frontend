@@ -1,62 +1,74 @@
 <template>
-  <section @scroll="handleScroll" class="h-screen overflow-auto">
-    <div
-      class="align-center flex flex-col justify-between gap-4 pb-8 sm:flex-row"
-    >
+  <section>
+    <div class="align-center flex items-center justify-between gap-4 pb-8">
       <input
         type="text"
         v-model="searchInput"
         @keyup="handleKeyup"
-        placeholder="Search by title"
+        placeholder="Search by title..."
         class="rounded border border-gray-500 bg-gray-800 p-2"
       />
       <button
         @click="toggleSortOrder"
-        class="rounded bg-gray-700 p-2 text-white"
+        class="size-8 rounded bg-gray-700 text-white"
       >
-        Sort by Episode {{ sortOrder === 'asc' ? 'Descending' : 'Ascending' }}
+        <font-awesome-icon
+          v-if="sortOrder === 'asc'"
+          :icon="['fas', 'arrow-up']"
+        />
+        <font-awesome-icon
+          v-if="sortOrder === 'desc'"
+          :icon="['fas', 'arrow-down']"
+        />
       </button>
     </div>
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       <Card
         v-for="(item, index) in visibleData"
         :key="index"
-        :title="item.title"
-        :meta="`Episode: ${item.episode_number}`"
         :image_url="`https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`"
         :image_alt="`YouTube thumbnail for ${item.title}`"
       >
+        <h2 class="min-h-12 text-xl font-bold">{{ item.title }}</h2>
+        <p class="border-l-2 border-yellow-400 pl-2 text-sm">
+          Episode: <b>{{ item.episode_number }}</b
+          ><br />
+          Date: <b>{{ new Date(item.release_date).toLocaleDateString() }}</b>
+        </p>
         <ul v-if="item.tags" class="flex gap-2">
           <li v-for="(tag, index) in item.tags" :key="index">
-            <Button :label="tag.name" href="#" />
+            <Button href="#">{{ tag.name }}</Button>
           </li>
         </ul>
         <ul class="flex gap-2">
           <li>
-            <Button
-              label="YouTube"
+            <YouTube
               :href="`https://www.youtube.com/watch?v=${item.youtube_id}`"
               target="_blank"
             />
           </li>
           <li v-if="item.spotify_url">
-            <Button label="Spotify" :href="item.spotify_url" target="_blank" />
+            <Spotify :href="item.spotify_url" target="_blank">Spotify</Spotify>
           </li>
-          <li v-if="item.apple_podcasts_url">
-            <Button
-              label="Apple Podcasts"
-              :href="item.apple_podcasts_url"
-              target="_blank"
-            />
+          <li v-if="item.apple_music_url">
+            <Apple :href="item.apple_music_url" target="_blank"
+              >Apple Podcasts</Apple
+            >
           </li>
         </ul>
       </Card>
     </div>
 
-    <Loader
-      :condition="loading"
-      classes="absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
-    />
+    <TransitionGroup>
+      <div
+        v-if="loading"
+        class="fixed left-0 top-0 h-full w-full bg-gradient-to-t from-gray-950/75"
+      ></div>
+      <Loader
+        :condition="loading"
+        classes="fixed top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
+      />
+    </TransitionGroup>
   </section>
 </template>
 
@@ -64,12 +76,18 @@
 import Card from './Card.vue'
 import Button from './Button.vue'
 import Loader from './Loader.vue'
+import YouTube from './YouTube.vue'
+import Spotify from './Spotify.vue'
+import Apple from './Apple.vue'
 
 export default {
   components: {
     Card,
     Button,
     Loader,
+    YouTube,
+    Spotify,
+    Apple,
   },
   data() {
     return {
@@ -118,13 +136,15 @@ export default {
         this.loading = false
       }, 1000) // 1 second delay
     },
-    handleScroll(event) {
-      const bottom =
-        event.target.scrollHeight - event.target.scrollTop ===
-        event.target.clientHeight
-      if (bottom && this.hasMoreResults) {
-        this.loadMore()
-      }
+    handleScroll() {
+      setTimeout(() => {
+        const bottom =
+          window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight
+        if (bottom && this.hasMoreResults) {
+          this.loadMore()
+        }
+      }, 100) // 100ms delay
     },
     handleKeyup(event) {
       // If the return key is pressed, update the search query immediately
@@ -177,6 +197,7 @@ export default {
     '$route.query.sort': 'applySearchQueryFromUrl',
   },
   created() {
+    window.addEventListener('scroll', this.handleScroll)
     fetch(`${import.meta.env.VITE_API_ENDPOINT}/podcasts`)
       .then((response) => response.json())
       .then((data) => {
@@ -185,6 +206,9 @@ export default {
         this.loadMore() // Load initial items
       })
       .catch((error) => console.error('Error fetching data:', error))
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
 }
 </script>

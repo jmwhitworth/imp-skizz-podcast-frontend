@@ -2,5 +2,30 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-createApp(App).use(router).mount('#app')
+// Add the icon to the library so you can use it in your page
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {
+  faArrowUpRightFromSquare,
+  faArrowUp,
+  faArrowDown,
+} from '@fortawesome/free-solid-svg-icons'
+import {
+  faYoutube,
+  faSpotify,
+  faApple,
+} from '@fortawesome/free-brands-svg-icons'
+library.add(
+  faArrowUpRightFromSquare,
+  faArrowUp,
+  faArrowDown,
+  faYoutube,
+  faSpotify,
+  faApple,
+)
+
+createApp(App)
+  .use(router)
+  .component('font-awesome-icon', FontAwesomeIcon)
+  .mount('#app')
