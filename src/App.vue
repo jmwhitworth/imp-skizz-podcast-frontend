@@ -11,13 +11,14 @@ import PodcastList from './components/PodcastList.vue'
       width="125"
       height="125"
     />
-
-    <div class="text-blue-500">
-      <h1>Header</h1>
-    </div>
+    <h1>Imp and Skizz Podcast Index</h1>
   </header>
 
   <main>
     <PodcastList />
   </main>
+
+  <footer>
+    <p>By Jack</p>
+  </footer>
 </template>
