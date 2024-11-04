@@ -1,7 +1,7 @@
 <template>
   <div v-if="condition" :class="classes">
     <div
-      class="border-8 border-t-black rounded-full w-12 h-12 animate-spin"
+      class="h-12 w-12 animate-spin rounded-full border-8 border-t-black"
     ></div>
   </div>
 </template>

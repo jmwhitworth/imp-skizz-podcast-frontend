@@ -1,6 +1,10 @@
 <template>
   <a :href="href" :target="target">
-    <button class="text-red-500">{{ label }}</button>
+    <button
+      class="rounded-md bg-blue-900 px-4 py-2 font-semibold shadow-lg transition-colors hover:bg-blue-950"
+    >
+      {{ label }}
+    </button>
   </a>
 </template>
 
