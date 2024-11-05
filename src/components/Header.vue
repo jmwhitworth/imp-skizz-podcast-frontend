@@ -17,7 +17,9 @@
         />
         <h1 class="text-2xl font-bold">Imp and Skizz Podcast Index</h1>
       </router-link>
-      <ul class="flex gap-2 sm:gap-4">
+      <ul
+        class="flex flex-row flex-wrap gap-x-2 gap-y-6 sm:flex sm:gap-x-4 md:grid md:grid-cols-2 lg:flex lg:gap-y-4"
+      >
         <li>
           <YouTube
             alt="Imp and Skizz Podcast YouTube channel"
@@ -39,6 +41,18 @@
             target="_blank"
           />
         </li>
+        <li>
+          <Button
+            href="https://www.patreon.com/impandskizz"
+            target="_blank"
+            text="Listen on Apple Podcasts"
+          >
+            <font-awesome-icon
+              :icon="['fab', 'fa-patreon']"
+              class="text-orange-500"
+            />
+          </Button>
+        </li>
       </ul>
     </section>
   </header>
@@ -48,4 +62,5 @@
 import YouTube from './YouTube.vue'
 import Spotify from './Spotify.vue'
 import Apple from './Apple.vue'
+import Button from './Button.vue'
 </script>

@@ -16,6 +16,7 @@ import {
   faYoutube,
   faSpotify,
   faApple,
+  faPatreon,
 } from '@fortawesome/free-brands-svg-icons'
 library.add(
   faArrowUpRightFromSquare,
@@ -25,6 +26,7 @@ library.add(
   faYoutube,
   faSpotify,
   faApple,
+  faPatreon,
 )
 
 createApp(App)
