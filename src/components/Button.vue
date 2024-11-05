@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import { text } from '@fortawesome/fontawesome-svg-core'
-
 export default {
   props: {
     text: {

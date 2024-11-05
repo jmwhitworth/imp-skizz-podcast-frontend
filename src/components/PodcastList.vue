@@ -168,6 +168,8 @@ export default {
       // If the return key is pressed, update the search query immediately
       if (event.key === 'Enter') {
         this.updateSearchQuery()
+      } else if (event.key === 'Tab' || event.key === 'Shift') {
+        // If the tab key is pressed, do nothing
       } else {
         // Otherwise, debounce the search query update
         clearTimeout(this.debounceTimeout)
