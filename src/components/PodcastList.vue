@@ -3,14 +3,15 @@
     <div class="align-center flex items-center justify-between gap-4 pb-8">
       <input
         type="text"
+        aria-label="Search by episode title"
         v-model="searchInput"
         @keyup="handleKeyup"
         placeholder="Search by title..."
-        class="rounded border border-gray-500 bg-gray-800 p-2"
+        class="w-full max-w-72 rounded border-2 border-gray-200/20 bg-gray-950 p-2"
       />
       <button
         @click="toggleSortOrder"
-        class="size-8 rounded bg-gray-700 text-white"
+        class="size-10 flex-shrink-0 rounded border-2 border-gray-200/20 bg-gray-950 text-white"
       >
         <font-awesome-icon
           v-if="sortOrder === 'asc'"
@@ -20,6 +21,7 @@
           v-if="sortOrder === 'desc'"
           :icon="['fas', 'arrow-down']"
         />
+        <span class="sr-only">Toggle sorting order</span>
       </button>
     </div>
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -30,28 +32,44 @@
         :image_alt="`YouTube thumbnail for ${item.title}`"
       >
         <h2 class="min-h-12 text-xl font-bold">{{ item.title }}</h2>
-        <p class="border-l-2 border-yellow-400 pl-2 text-sm">
-          Episode: <b>{{ item.episode_number }}</b
-          ><br />
-          Date: <b>{{ new Date(item.release_date).toLocaleDateString() }}</b>
-        </p>
-        <ul v-if="item.tags" class="flex gap-2">
-          <li v-for="(tag, index) in item.tags" :key="index">
-            <Button href="#">{{ tag.name }}</Button>
+        <ul class="border-l-2 border-yellow-400 pl-2 text-sm">
+          <li v-if="item.episode_number">
+            Episode: <b>{{ item.episode_number }}</b>
+          </li>
+          <li v-if="item.release_date">
+            Date: <b>{{ new Date(item.release_date).toLocaleDateString() }}</b>
+          </li>
+          <li v-if="item.duration">
+            Duration: <b>{{ msToTime(item.duration) }}</b>
           </li>
         </ul>
+        <div v-if="item.preview_url" class="pb-4">
+          <span class="mb-1 block font-semibold">Preview:</span>
+          <audio controls="controls" class="w-full rounded-full bg-blue-900">
+            <source :src="item.preview_url" type="audio/mpeg" />
+          </audio>
+        </div>
         <ul class="flex gap-2">
           <li>
             <YouTube
+              :alt="`Watch this episode on YouTube`"
               :href="`https://www.youtube.com/watch?v=${item.youtube_id}`"
               target="_blank"
             />
           </li>
           <li v-if="item.spotify_url">
-            <Spotify :href="item.spotify_url" target="_blank">Spotify</Spotify>
+            <Spotify
+              alt="Listen to this episode on Spotify"
+              :href="item.spotify_url"
+              target="_blank"
+              >Spotify</Spotify
+            >
           </li>
           <li v-if="item.apple_music_url">
-            <Apple :href="item.apple_music_url" target="_blank"
+            <Apple
+              alt="Listen to this episode on Apple Podcasts"
+              :href="item.apple_music_url"
+              target="_blank"
               >Apple Podcasts</Apple
             >
           </li>
@@ -66,7 +84,7 @@
       ></div>
       <Loader
         :condition="loading"
-        classes="fixed top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
+        class="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"
       />
     </TransitionGroup>
   </section>
@@ -190,6 +208,12 @@ export default {
       this.visibleData = [] // Clear the current visible data
       this.updateUrlQuery()
       this.loadMore() // Load the first page of results for the new sort order
+    },
+    msToTime(duration) {
+      const seconds = Math.floor((duration / 1000) % 60)
+      const minutes = Math.floor((duration / (1000 * 60)) % 60)
+      const hours = Math.floor((duration / (1000 * 60 * 60)) % 24)
+      return `${hours ? `${hours}:` : ''}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
     },
   },
   watch: {

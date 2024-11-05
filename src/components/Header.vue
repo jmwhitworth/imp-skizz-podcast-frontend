@@ -1,5 +1,5 @@
 <template>
-  <header class="container mb-16 py-4">
+  <header class="container mb-16 pt-8">
     <section
       class="container flex flex-col items-center justify-between gap-8 md:flex-row"
     >
@@ -17,21 +17,24 @@
         />
         <h1 class="text-2xl font-bold">Imp and Skizz Podcast Index</h1>
       </router-link>
-      <ul class="flex gap-4">
+      <ul class="flex gap-2 sm:gap-4">
         <li>
           <YouTube
+            alt="Imp and Skizz Podcast YouTube channel"
             href="https://www.youtube.com/@impandskizzpodcast"
             target="_blank"
           />
         </li>
         <li>
           <Spotify
+            alt="Imp and Skizz Podcast on Spotify"
             href="https://open.spotify.com/show/1EPoDsUI8BnhLbdERd5Y4w"
             target="_blank"
           />
         </li>
         <li>
           <Apple
+            alt="Imp and Skizz Podcast on Apple Podcasts"
             href="https://podcasts.apple.com/gb/podcast/imp-and-skizz-podcast/id1639033817"
             target="_blank"
           />

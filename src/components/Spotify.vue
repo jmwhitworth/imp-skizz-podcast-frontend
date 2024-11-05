@@ -1,5 +1,5 @@
 <template>
-  <Button :href="href">
+  <Button :href="href" text="Listen on Spotify">
     <font-awesome-icon :icon="['fab', 'fa-spotify']" class="text-green-500" />
   </Button>
 </template>

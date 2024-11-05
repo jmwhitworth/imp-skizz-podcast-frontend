@@ -1,5 +1,5 @@
 <template>
-  <Button :href="href">
+  <Button :href="href" text="Watch this on YouTube">
     <font-awesome-icon :icon="['fab', 'fa-youtube']" class="text-red-500" />
   </Button>
 </template>

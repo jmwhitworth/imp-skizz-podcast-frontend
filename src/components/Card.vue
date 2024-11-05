@@ -1,6 +1,6 @@
 <template>
   <div
-    class="space-y-4 rounded-lg border-2 border-gray-200/20 bg-gray-950 p-4 text-gray-100 transition-colors duration-200 hover:border-gray-200/30"
+    class="space-y-4 rounded-lg border-2 border-gray-200/20 bg-gray-950 p-4 pb-6 text-gray-100 transition-colors duration-200 hover:border-gray-200/30"
   >
     <figure class="relative w-full overflow-hidden rounded-t-md pb-[56.25%]">
       <img

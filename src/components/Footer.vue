@@ -1,7 +1,7 @@
 <template>
   <footer>
     <section
-      class="items-bottom container mt-16 flex flex-col justify-between gap-4 md:flex-row"
+      class="container mt-16 flex flex-col items-start justify-between gap-8 pb-8 md:flex-row md:items-end"
     >
       <div class="max-w-2xl space-y-2 text-sm text-gray-400">
         <p>
@@ -10,14 +10,35 @@
           episodes.
         </p>
         <p>
-          If anyone from the Imp & Skizz team would like to reach out to me, I'm
-          happy to provide this website, domain, and all assets to them to use
-          or modify as they see fit.
+          If anyone from the Imp & Skizz team would like to
+          <a
+            alt="Contact Jack Whitworth"
+            href="https://jackwhitworth.com/contact/"
+            target="_blank"
+            class="underline"
+            >reach out to me</a
+          >, I'm happy to provide this website, domain, and all assets to them
+          free of charge to use, modify, or destroy as they see fit.
         </p>
       </div>
-      <Button href="https://jackwhitworth.com" target="_blank" class="text-sm"
-        >Website by Jack</Button
+      <div
+        class="flex flex-shrink-0 flex-row-reverse text-left md:flex-col md:text-right lg:flex-row"
       >
+        <Button
+          text="Buy Jack a coffee"
+          href="https://buymeacoffee.com/jackwhitworth"
+          target="_blank"
+          class="border-none text-sm"
+          ><font-awesome-icon :icon="['fas', 'fa-mug-saucer']"
+        /></Button>
+        <Button
+          text="Jack Whitworth's website"
+          href="https://jackwhitworth.com"
+          target="_blank"
+          class="border-none text-sm"
+          >Website by Jack</Button
+        >
+      </div>
     </section>
   </footer>
 </template>

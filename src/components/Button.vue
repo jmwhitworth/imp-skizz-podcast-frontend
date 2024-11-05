@@ -1,24 +1,25 @@
 <template>
-  <a :href="href" :target="target">
-    <button
-      class="rounded-lg border-2 border-gray-200/20 px-4 py-2 font-semibold shadow-lg transition-colors hover:border-gray-200/30"
-    >
-      <slot></slot>
-      <font-awesome-icon
-        v-if="target === '_blank'"
-        :icon="['fas', 'fa-arrow-up-right-from-square']"
-        class="ml-2"
-      />
-    </button>
+  <a
+    class="rounded-lg border-2 border-gray-200/20 px-4 py-2 font-semibold shadow-lg transition-colors hover:border-gray-200/30"
+  >
+    <slot></slot>
+    <font-awesome-icon
+      v-if="target === '_blank'"
+      :icon="['fas', 'fa-arrow-up-right-from-square']"
+      class="ml-1 sm:ml-2 md:ml-1 lg:ml-2"
+    />
+    <span v-if="text" class="sr-only">{{ text }}</span>
   </a>
 </template>
 
 <script>
+import { text } from '@fortawesome/fontawesome-svg-core'
+
 export default {
   props: {
-    href: {
+    text: {
       type: String,
-      required: true,
+      required: false,
     },
     target: {
       type: String,

@@ -1,5 +1,5 @@
 <template>
-  <Button :href="href">
+  <Button :href="href" text="Listen on Apple Podcasts">
     <font-awesome-icon :icon="['fab', 'fa-apple']" class="text-purple-500" />
   </Button>
 </template>

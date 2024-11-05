@@ -1,12 +1,12 @@
 // router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import PodcastList from '../components/PodcastList.vue'
+import home from '@/pages/home.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: PodcastList,
+    component: home,
   },
 ]
 

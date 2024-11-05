@@ -10,6 +10,7 @@ import {
   faArrowUpRightFromSquare,
   faArrowUp,
   faArrowDown,
+  faMugSaucer,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faYoutube,
@@ -20,6 +21,7 @@ library.add(
   faArrowUpRightFromSquare,
   faArrowUp,
   faArrowDown,
+  faMugSaucer,
   faYoutube,
   faSpotify,
   faApple,
