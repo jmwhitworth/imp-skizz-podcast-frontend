@@ -7,7 +7,7 @@
         :src="image_url"
         :alt="image_alt"
         class="absolute bottom-0 left-0 right-0 top-[-16.75%] w-full object-center"
-        loading="lazy"
+        loading="eager"
       />
     </figure>
     <slot></slot>
