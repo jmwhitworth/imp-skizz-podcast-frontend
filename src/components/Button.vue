@@ -1,6 +1,7 @@
 <template>
   <a
     class="rounded-lg border-2 border-gray-200/20 px-4 py-2 font-semibold shadow-lg transition-colors hover:border-gray-200/30"
+    :target="target"
   >
     <slot></slot>
     <font-awesome-icon
