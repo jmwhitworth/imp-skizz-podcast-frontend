@@ -10,7 +10,7 @@
       >
         <img
           alt="Imp and Skizz Podcast logo"
-          src="./../assets/logo-medium.webp"
+          src="@/assets/logo-medium.webp"
           width="125"
           height="125"
           class="size-20"
@@ -59,8 +59,8 @@
 </template>
 
 <script setup>
-import YouTube from './YouTube.vue'
-import Spotify from './Spotify.vue'
-import Apple from './Apple.vue'
-import Button from './Button.vue'
+import YouTube from '@/components/YouTube.vue'
+import Spotify from '@/components/Spotify.vue'
+import Apple from '@/components/Apple.vue'
+import Button from '@/components/Button.vue'
 </script>

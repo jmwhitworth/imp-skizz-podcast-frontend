@@ -91,12 +91,12 @@
 </template>
 
 <script>
-import Card from './Card.vue'
-import Button from './Button.vue'
-import Loader from './Loader.vue'
-import YouTube from './YouTube.vue'
-import Spotify from './Spotify.vue'
-import Apple from './Apple.vue'
+import Card from '@/components/Card.vue'
+import Button from '@/components/Button.vue'
+import Loader from '@/components/Loader.vue'
+import YouTube from '@/components/YouTube.vue'
+import Spotify from '@/components/Spotify.vue'
+import Apple from '@/components/Apple.vue'
 
 export default {
   components: {

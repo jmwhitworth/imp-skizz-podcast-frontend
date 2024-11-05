@@ -44,5 +44,5 @@
 </template>
 
 <script setup>
-import Button from './Button.vue'
+import Button from '@/components/Button.vue'
 </script>

@@ -1,35 +1,17 @@
 import './assets/main.css'
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-// Add the icon to the library so you can use it in your page
-import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-  faArrowUpRightFromSquare,
-  faArrowUp,
-  faArrowDown,
-  faMugSaucer,
-} from '@fortawesome/free-solid-svg-icons'
-import {
-  faYoutube,
-  faSpotify,
-  faApple,
-  faPatreon,
-} from '@fortawesome/free-brands-svg-icons'
-library.add(
-  faArrowUpRightFromSquare,
-  faArrowUp,
-  faArrowDown,
-  faMugSaucer,
-  faYoutube,
-  faSpotify,
-  faApple,
-  faPatreon,
-)
+import { createApp } from 'vue'
+import App from '@/App.vue'
+import router from '@/router.js'
+import { createHead } from '@unhead/vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { RouterLink } from 'vue-router'
 
 createApp(App)
-  .use(router)
-  .component('font-awesome-icon', FontAwesomeIcon)
+  .use(
+    router, // For SPA navigation
+    createHead(), // For managing the document head / meta
+  )
+  .component('font-awesome-icon', FontAwesomeIcon) // Mount the Font Awesome component globally
+  .component('router-link', RouterLink) // Mount the Vue Router link component globally
   .mount('#app')
