@@ -10,7 +10,7 @@
       >
         <img
           alt="Imp and Skizz Podcast logo"
-          src="@/assets/logo-medium.webp"
+          src="~/assets/logo-medium.webp"
           width="125"
           height="125"
           class="size-20"
@@ -47,10 +47,7 @@
             target="_blank"
             text="Listen on Apple Podcasts"
           >
-            <font-awesome-icon
-              :icon="['fab', 'fa-patreon']"
-              class="text-orange-500"
-            />
+            <font-awesome :icon="['fab', 'patreon']" class="text-orange-500" />
           </Button>
         </li>
       </ul>
@@ -59,8 +56,8 @@
 </template>
 
 <script setup>
-import YouTube from '@/components/YouTube.vue'
-import Spotify from '@/components/Spotify.vue'
-import Apple from '@/components/Apple.vue'
-import Button from '@/components/Button.vue'
+import YouTube from './YouTube.vue'
+import Spotify from './Spotify.vue'
+import Apple from './Apple.vue'
+import Button from './Button.vue'
 </script>

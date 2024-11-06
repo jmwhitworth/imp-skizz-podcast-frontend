@@ -29,7 +29,7 @@
           href="https://buymeacoffee.com/jackwhitworth"
           target="_blank"
           class="border-none text-sm"
-          ><font-awesome-icon :icon="['fas', 'fa-mug-saucer']"
+          ><font-awesome :icon="['fas', 'mug-saucer']"
         /></Button>
         <Button
           text="Jack Whitworth's website"
@@ -44,5 +44,5 @@
 </template>
 
 <script setup>
-import Button from '@/components/Button.vue'
+import Button from './Button.vue'
 </script>

@@ -4,9 +4,9 @@
     :target="target"
   >
     <slot></slot>
-    <font-awesome-icon
+    <font-awesome
       v-if="target === '_blank'"
-      :icon="['fas', 'fa-arrow-up-right-from-square']"
+      :icon="['fas', 'arrow-up-right-from-square']"
       class="ml-1 sm:ml-2 md:ml-1 lg:ml-2"
     />
     <span v-if="text" class="sr-only">{{ text }}</span>

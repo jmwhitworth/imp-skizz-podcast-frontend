@@ -13,11 +13,8 @@
         @click="toggleSortOrder"
         class="size-10 flex-shrink-0 rounded border-2 border-gray-200/20 bg-gray-950 text-white"
       >
-        <font-awesome-icon
-          v-if="sortOrder === 'asc'"
-          :icon="['fas', 'arrow-up']"
-        />
-        <font-awesome-icon
+        <font-awesome v-if="sortOrder === 'asc'" :icon="['fas', 'arrow-up']" />
+        <font-awesome
           v-if="sortOrder === 'desc'"
           :icon="['fas', 'arrow-down']"
         />
@@ -91,12 +88,12 @@
 </template>
 
 <script>
-import Card from '@/components/Card.vue'
-import Button from '@/components/Button.vue'
-import Loader from '@/components/Loader.vue'
-import YouTube from '@/components/YouTube.vue'
-import Spotify from '@/components/Spotify.vue'
-import Apple from '@/components/Apple.vue'
+import Card from './Card.vue'
+import Button from './Button.vue'
+import Loader from './Loader.vue'
+import YouTube from './YouTube.vue'
+import Spotify from './Spotify.vue'
+import Apple from './Apple.vue'
 
 export default {
   components: {
@@ -223,7 +220,6 @@ export default {
     '$route.query.sort': 'applySearchQueryFromUrl',
   },
   created() {
-    window.addEventListener('scroll', this.handleScroll)
     fetch(`${import.meta.env.VITE_API_ENDPOINT}/podcasts`)
       .then((response) => response.json())
       .then((data) => {
@@ -232,6 +228,9 @@ export default {
         this.loadMore() // Load initial items
       })
       .catch((error) => console.error('Error fetching data:', error))
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
