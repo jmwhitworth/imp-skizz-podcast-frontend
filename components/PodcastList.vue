@@ -1,92 +1,3 @@
-<template>
-  <section>
-    <div class="align-center flex items-center justify-between gap-4 pb-8">
-      <input
-        type="text"
-        aria-label="Search by episode title"
-        v-model="searchInput"
-        @keyup="handleKeyup"
-        placeholder="Search by title..."
-        class="w-full max-w-72 rounded border-2 border-gray-200/20 bg-gray-950 p-2"
-      />
-      <button
-        @click="toggleSortOrder"
-        class="size-10 flex-shrink-0 rounded border-2 border-gray-200/20 bg-gray-950 text-white"
-      >
-        <font-awesome v-if="sortOrder === 'asc'" :icon="['fas', 'arrow-up']" />
-        <font-awesome
-          v-if="sortOrder === 'desc'"
-          :icon="['fas', 'arrow-down']"
-        />
-        <span class="sr-only">Toggle sorting order</span>
-      </button>
-    </div>
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      <Card
-        v-for="(item, index) in visibleData"
-        :key="index"
-        :image_url="`https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`"
-        :image_alt="`YouTube thumbnail for ${item.title}`"
-      >
-        <h2 class="text-xl font-bold">{{ item.title }}</h2>
-        <ul class="border-l-2 border-yellow-400 pl-4">
-          <li v-if="item.episode_number">
-            Episode: <b>{{ item.episode_number }}</b>
-          </li>
-          <li v-if="item.release_date">
-            Date: <b>{{ new Date(item.release_date).toLocaleDateString() }}</b>
-          </li>
-          <li v-if="item.duration">
-            Duration: <b>{{ msToTime(item.duration) }}</b>
-          </li>
-        </ul>
-        <div v-if="item.preview_url" class="pb-4">
-          <span class="mb-1 block font-semibold">Preview:</span>
-          <audio controls="controls" class="w-full rounded-full bg-blue-900">
-            <source :src="item.preview_url" type="audio/mpeg" />
-          </audio>
-        </div>
-        <ul class="flex gap-2">
-          <li>
-            <YouTube
-              :alt="`Watch this episode on YouTube`"
-              :href="`https://www.youtube.com/watch?v=${item.youtube_id}`"
-              target="_blank"
-            />
-          </li>
-          <li v-if="item.spotify_url">
-            <Spotify
-              alt="Listen to this episode on Spotify"
-              :href="item.spotify_url"
-              target="_blank"
-              >Spotify</Spotify
-            >
-          </li>
-          <li v-if="item.apple_music_url">
-            <Apple
-              alt="Listen to this episode on Apple Podcasts"
-              :href="item.apple_music_url"
-              target="_blank"
-              >Apple Podcasts</Apple
-            >
-          </li>
-        </ul>
-      </Card>
-    </div>
-
-    <TransitionGroup>
-      <div
-        v-if="loading"
-        class="fixed left-0 top-0 h-full w-full bg-gradient-to-t from-gray-950/75"
-      ></div>
-      <Loader
-        :condition="loading"
-        class="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"
-      />
-    </TransitionGroup>
-  </section>
-</template>
-
 <script>
 import Card from './Card.vue'
 import Button from './Button.vue'
@@ -237,3 +148,97 @@ export default {
   },
 }
 </script>
+
+<template>
+  <section>
+    <div class="align-center flex items-center justify-between gap-4 pb-8">
+      <input
+        type="text"
+        aria-label="Search by episode title"
+        v-model="searchInput"
+        @keyup="handleKeyup"
+        placeholder="Search by title..."
+        class="w-full max-w-72 rounded border-2 border-gray-200/20 bg-gray-950 p-2"
+      />
+      <button
+        @click="toggleSortOrder"
+        class="size-10 flex-shrink-0 rounded border-2 border-gray-200/20 bg-gray-950 text-white"
+      >
+        <span v-if="sortOrder === 'asc'">
+          <span class="sr-only">Ordered ascending</span>
+          <font-awesome :icon="['fas', 'arrow-up']" aria-hidden="true" />
+        </span>
+
+        <span v-if="sortOrder === 'desc'">
+          <span class="sr-only">Ordered descending</span>
+          <font-awesome :icon="['fas', 'arrow-down']" aria-hidden="true" />
+        </span>
+
+        <span class="sr-only">Toggle sorting order</span>
+      </button>
+    </div>
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3" aria-live="polite">
+      <Card
+        v-for="(item, index) in visibleData"
+        :key="index"
+        :image_url="`https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`"
+        :image_alt="`YouTube thumbnail for ${item.title}`"
+      >
+        <h2 class="text-xl font-bold">{{ item.title }}</h2>
+        <ul class="border-l-2 border-yellow-400 pl-4">
+          <li v-if="item.episode_number">
+            Episode: <b>{{ item.episode_number }}</b>
+          </li>
+          <li v-if="item.release_date">
+            Date: <b>{{ new Date(item.release_date).toLocaleDateString() }}</b>
+          </li>
+          <li v-if="item.duration">
+            Duration: <b>{{ msToTime(item.duration) }}</b>
+          </li>
+        </ul>
+        <div v-if="item.preview_url" class="pb-4">
+          <span class="mb-1 block font-semibold">Preview:</span>
+          <audio controls="controls" class="w-full rounded-full bg-blue-900">
+            <source :src="item.preview_url" type="audio/mpeg" />
+          </audio>
+        </div>
+        <ul class="flex gap-2">
+          <li>
+            <YouTube
+              :alt="`Watch this episode on YouTube`"
+              :href="`https://www.youtube.com/watch?v=${item.youtube_id}`"
+              target="_blank"
+            />
+          </li>
+          <li v-if="item.spotify_url">
+            <Spotify
+              alt="Listen to this episode on Spotify"
+              :href="item.spotify_url"
+              target="_blank"
+              >Spotify</Spotify
+            >
+          </li>
+          <li v-if="item.apple_music_url">
+            <Apple
+              alt="Listen to this episode on Apple Podcasts"
+              :href="item.apple_music_url"
+              target="_blank"
+              >Apple Podcasts</Apple
+            >
+          </li>
+        </ul>
+      </Card>
+    </div>
+
+    <TransitionGroup>
+      <div
+        v-if="loading"
+        class="fixed left-0 top-0 h-full w-full bg-gradient-to-t from-gray-950/75"
+      ></div>
+      <Loader
+        :condition="loading"
+        class="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"
+      />
+    </TransitionGroup>
+  </section>
+</template>

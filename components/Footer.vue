@@ -1,3 +1,7 @@
+<script setup>
+import Button from './Button.vue'
+</script>
+
 <template>
   <footer>
     <section
@@ -42,7 +46,3 @@
     </section>
   </footer>
 </template>
-
-<script setup>
-import Button from './Button.vue'
-</script>

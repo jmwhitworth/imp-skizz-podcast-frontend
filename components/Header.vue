@@ -1,3 +1,10 @@
+<script setup>
+import YouTube from './YouTube.vue'
+import Spotify from './Spotify.vue'
+import Apple from './Apple.vue'
+import Button from './Button.vue'
+</script>
+
 <template>
   <header class="container mb-16 pt-8">
     <section
@@ -54,10 +61,3 @@
     </section>
   </header>
 </template>
-
-<script setup>
-import YouTube from './YouTube.vue'
-import Spotify from './Spotify.vue'
-import Apple from './Apple.vue'
-import Button from './Button.vue'
-</script>

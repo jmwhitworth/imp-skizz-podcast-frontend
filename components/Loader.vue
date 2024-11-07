@@ -1,3 +1,16 @@
+<script setup>
+const props = defineProps({
+  condition: {
+    type: Boolean,
+    required: true,
+  },
+  classes: {
+    type: String,
+    default: '',
+  },
+})
+</script>
+
 <template>
   <div v-if="condition" class="z-50">
     <div
@@ -5,18 +18,3 @@
     ></div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    condition: {
-      type: Boolean,
-      required: true,
-    },
-    classes: {
-      type: String,
-      default: '',
-    },
-  },
-}
-</script>
