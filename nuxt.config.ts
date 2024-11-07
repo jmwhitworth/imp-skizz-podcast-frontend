@@ -3,30 +3,9 @@ export default defineNuxtConfig({
   ssr: true,
   app: {
     head: {
-      title: 'Imp And Skizz Podcast Index',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        {
-          name: 'og:title',
-          content: 'Imp And Skizz Podcast Index',
-        },
-        {
-          name: 'og:description',
-          content: 'Browse all episodes of the Imp and Skizz Podcast.',
-        },
-        {
-          name: 'description',
-          content: 'Browse all episodes of the Imp and Skizz Podcast.',
-        },
-        {
-          name: 'og:image',
-          content: '/imp-skizz-podcast-og.jpg',
-        },
-        {
-          name: 'twitter:image',
-          content: '/imp-skizz-podcast-og.jpg',
-        },
         {
           name: 'og:type',
           content: 'website',

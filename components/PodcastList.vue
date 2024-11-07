@@ -28,8 +28,8 @@
         :image_url="`https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`"
         :image_alt="`YouTube thumbnail for ${item.title}`"
       >
-        <h2 class="min-h-12 text-xl font-bold">{{ item.title }}</h2>
-        <ul class="border-l-2 border-yellow-400 pl-2 text-sm">
+        <h2 class="text-xl font-bold">{{ item.title }}</h2>
+        <ul class="border-l-2 border-yellow-400 pl-4">
           <li v-if="item.episode_number">
             Episode: <b>{{ item.episode_number }}</b>
           </li>
