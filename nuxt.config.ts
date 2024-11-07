@@ -21,11 +21,11 @@ export default defineNuxtConfig({
         },
         {
           name: 'og:image',
-          content: 'https://impandskizzpodcast.com/imp-skizz-podcast-og.jpg',
+          content: '/imp-skizz-podcast-og.jpg',
         },
         {
           name: 'twitter:image',
-          content: 'https://impandskizzpodcast.com/imp-skizz-podcast-og.jpg',
+          content: '/imp-skizz-podcast-og.jpg',
         },
         {
           name: 'og:type',
