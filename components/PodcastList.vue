@@ -19,7 +19,7 @@ const sortOrder = ref(urlQuery.sort ?? 'desc')
 
 // Search-related variables
 const searchQuery = ref(urlQuery.search ?? '')
-const searchInput = ref('')
+const searchInput = ref(urlQuery.search ?? '')
 const debounceTimeout = ref(null)
 
 const loading = ref(false)
