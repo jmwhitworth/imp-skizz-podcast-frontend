@@ -10,11 +10,7 @@ import Button from './Button.vue'
     <section
       class="container flex flex-col items-center justify-between gap-8 md:flex-row"
     >
-      <router-link
-        :to="{ path: '/', query: {} }"
-        replace
-        class="flex items-center gap-4"
-      >
+      <NuxtLink to="/" replace class="flex items-center gap-4">
         <img
           alt="Imp and Skizz Podcast logo"
           src="~/assets/logo-medium.webp"
@@ -23,7 +19,7 @@ import Button from './Button.vue'
           class="size-20"
         />
         <h1 class="text-2xl font-bold">Imp and Skizz Podcast Index</h1>
-      </router-link>
+      </NuxtLink>
       <ul
         class="flex flex-row flex-wrap gap-x-2 gap-y-6 sm:flex sm:gap-x-4 md:grid md:grid-cols-2 lg:flex lg:gap-y-4"
       >
