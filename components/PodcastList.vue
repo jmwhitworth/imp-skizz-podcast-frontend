@@ -13,7 +13,7 @@ const router = useRouter()
 const urlQuery = reactive(route.query)
 
 // Pagination-related variables
-const itemsPerPage = ref(21)
+const itemsPerPage = ref(15)
 const currentPage = ref(1)
 const sortOrder = ref(urlQuery.sort ?? 'desc')
 
@@ -256,12 +256,7 @@ onBeforeUnmount(async () => {
       </button>
     </div>
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3" aria-live="polite">
-      <Card
-        v-for="(item, index) in visibleData"
-        :key="index"
-        :image_url="`https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`"
-        :image_alt="`YouTube thumbnail for ${item.title}`"
-      >
+      <Card v-for="(item, index) in visibleData" :key="index" :podcast="item">
         <h2 class="text-xl font-bold">{{ item.title }}</h2>
         <ul class="border-l-2 border-yellow-400 pl-4">
           <li v-if="item.episode_number">
