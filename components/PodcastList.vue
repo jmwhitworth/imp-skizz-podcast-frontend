@@ -52,7 +52,7 @@ const updateUrlQuery = async () => {
   if (urlQueryTimeout.value) clearTimeout(urlQueryTimeout.value)
   urlQueryTimeout.value = setTimeout(() => {
     loading.value = false
-  }, 100)
+  }, 500)
 }
 
 /**
@@ -101,7 +101,7 @@ const handleSearchInputKeyup = (event) => {
     searchQuery.value = searchInput.value
     currentPage.value = 1
     updateUrlQuery()
-  }, 500)
+  }, 1000)
 }
 
 /**
