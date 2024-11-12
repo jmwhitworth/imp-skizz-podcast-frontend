@@ -11,111 +11,48 @@ import Apple from './Apple.vue'
 const route = useRoute()
 const router = useRouter()
 const urlQuery = reactive(route.query)
+const urlQueryTimeout = ref(null)
 
 // Pagination-related variables
-const itemsPerPage = ref(15)
-const currentPage = ref(1)
+//const itemsPerPage = ref(15)
+const currentPage = ref(1) // Always reset page on page load
 const sortOrder = ref(urlQuery.sort ?? 'desc')
 
 // Search-related variables
 const searchQuery = ref(urlQuery.search ?? '')
 const searchInput = ref(urlQuery.search ?? '')
-const debounceTimeout = ref(null)
+const searchTimeout = ref(null)
 
+const urlWatcherTimeout = ref(null)
 const loading = ref(false)
 
-// The original data fetched from the API
-const { data } = await useFetch('podcasts', {
-  baseURL: import.meta.env.VITE_API_ENDPOINT,
+const url = computed(() => {
+  const _url = new URL(import.meta.env.VITE_API_ENDPOINT + '/podcasts')
+  _url.search = new URLSearchParams(route.query)
+  return _url.toString()
 })
 
-// Adds a formatted release date to each item
-const formattedData = computed(() =>
-  data.value.map((item) => {
-    const date = new Date(item.release_date)
-    const day = date.getDate()
-    const suffix =
-      day > 3 && day < 21 ? 'th' : ['st', 'nd', 'rd'][(day % 10) - 1] || 'th'
-    return {
-      ...item,
-      formatted_release_date: `${day}${suffix} ${date.toLocaleDateString(
-        'en-GB',
-        {
-          month: 'short',
-          year: 'numeric',
-        },
-      )}`,
-    }
-  }),
-)
-
-// Data after being filtered based on search query
-const filteredData = computed(() => {
-  const filtered = [...formattedData.value].filter((item) =>
-    item.title.toLowerCase().includes(searchQuery.value.toLowerCase()),
-  )
-
-  return [...filtered].sort((a, b) => {
-    const comparison = a.episode_number - b.episode_number
-    return sortOrder.value === 'asc' ? comparison : -comparison
-  })
-})
-
-// Data that's currently visible based on the currentPage and itemsPerPage
-const visibleData = computed(() => {
-  const start = 0
-  const end = start + itemsPerPage.value * currentPage.value
-  return filteredData.value.slice(start, end)
-})
-
-// Determines if there's more data to be loaded
-const hasMoreResults = computed(
-  () => visibleData.value.length < filteredData.value.length,
-)
+const { data } = useFetch(url, { refetch: true })
 
 /**
- * Converts the given duration in milliseconds to a human-readable format
- * @param duration {number} - Duration in milliseconds
- * @returns {string} - Human-readable duration
+ * Updates the URL query based on the search query and sorting order
  */
-const msToTime = (duration) => {
-  const seconds = Math.floor((duration / 1000) % 60)
-  const minutes = Math.floor((duration / (1000 * 60)) % 60)
-  const hours = Math.floor((duration / (1000 * 60 * 60)) % 24)
-  return `${hours ? `${hours.toString()}:` : ''}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-}
-
-/**
- * Increases the currentPage number
- */
-const loadNextPage = async () => {
+const updateUrlQuery = async () => {
+  await nextTick()
   if (loading.value) return
   loading.value = true
 
-  await nextTick()
+  const query = {
+    ...(searchQuery.value.length > 0 && { search: searchQuery.value }),
+    ...(sortOrder.value !== 'desc' && { sort: sortOrder.value }),
+    ...(currentPage.value > 1 && { page: currentPage.value }),
+  }
 
-  // Artificial delay
-  setTimeout(() => {
-    currentPage.value++
+  router.push({ query })
+  if (urlQueryTimeout.value) clearTimeout(urlQueryTimeout.value)
+  urlQueryTimeout.value = setTimeout(() => {
     loading.value = false
-  }, 500)
-}
-
-/**
- * Updates the search query based on the input value
- */
-const updateSearchQuery = async () => {
-  if (loading.value) return
-  loading.value = true
-
-  await nextTick()
-
-  // Artificial delay
-  setTimeout(() => {
-    searchQuery.value = searchInput.value
-    currentPage.value = 1
-    loading.value = false
-  }, 500)
+  }, 100)
 }
 
 /**
@@ -126,34 +63,15 @@ const resetQueries = () => {
   searchQuery.value = ''
   searchInput.value = ''
   sortOrder.value = 'desc'
+  updateUrlQuery()
 }
 
 /**
  * Toggles the sorting order between ascending and descending
  */
 const toggleSortOrder = async () => {
-  if (loading.value) return
-  loading.value = true
-
-  await nextTick()
-
-  // Artificial delay
-  setTimeout(() => {
-    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
-    loading.value = false
-  }, 500)
-}
-
-/**
- * Updates the URL query based on the search query and sorting order
- */
-const updateUrlQuery = () => {
-  const query = {
-    ...(searchQuery.value.length > 0 && { search: searchQuery.value }),
-    ...(sortOrder.value !== 'desc' && { sort: sortOrder.value }),
-  }
-
-  router.push({ query })
+  sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  updateUrlQuery()
 }
 
 /**
@@ -170,38 +88,30 @@ const handleSearchInputKeyup = (event) => {
 
   // Run immediately if the Enter key is pressed
   if (event.key == 'Enter') {
-    clearTimeout(debounceTimeout.value)
-    updateSearchQuery()
+    clearTimeout(searchTimeout.value)
+    searchQuery.value = searchInput.value
+    currentPage.value = 1
+    updateUrlQuery()
     return
   }
 
   // Otherwise debounce the search query update
-  if (debounceTimeout.value) clearTimeout(debounceTimeout.value)
-  debounceTimeout.value = setTimeout(() => {
-    updateSearchQuery()
+  if (searchTimeout.value) clearTimeout(searchTimeout.value)
+  searchTimeout.value = setTimeout(() => {
+    searchQuery.value = searchInput.value
+    currentPage.value = 1
+    updateUrlQuery()
   }, 500)
 }
 
 /**
- * Loads more data when the user scrolls to the bottom of the page
+ * Fetches the next page of results
  */
-const handleScroll = () => {
-  if (loading.value || !hasMoreResults.value) return
-
-  const { scrollTop, clientHeight, scrollHeight } = document.documentElement
-  if (scrollTop + clientHeight >= scrollHeight - 100) {
-    loadNextPage()
-  }
+const nextPage = () => {
+  currentPage.value++
+  updateUrlQuery()
 }
 
-// When the data changes, update the URL query to match
-watch(
-  () => visibleData.value,
-  async () => {
-    await nextTick()
-    updateUrlQuery()
-  },
-)
 // If the route query is empty, reset the search query and sorting order
 watch(
   () => route.query,
@@ -212,19 +122,6 @@ watch(
     }
   },
 )
-
-/**
- * Event listeners for handling scrolling
- */
-onMounted(async () => {
-  await nextTick()
-  window.addEventListener('scroll', handleScroll)
-})
-
-onBeforeUnmount(async () => {
-  await nextTick()
-  window.removeEventListener('scroll', handleScroll)
-})
 </script>
 
 <template>
@@ -256,17 +153,17 @@ onBeforeUnmount(async () => {
       </button>
     </div>
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3" aria-live="polite">
-      <Card v-for="(item, index) in visibleData" :key="index" :podcast="item">
+      <Card v-for="(item, index) in data.podcasts" :key="index" :podcast="item">
         <h2 class="text-xl font-bold">{{ item.title }}</h2>
         <ul class="border-l-2 border-yellow-400 pl-4">
           <li v-if="item.episode_number">
             Episode: <b>{{ item.episode_number }}</b>
           </li>
-          <li v-if="item.release_date">
+          <li v-if="item.formatted_release_date">
             Date: <b>{{ item.formatted_release_date }}</b>
           </li>
-          <li v-if="item.duration">
-            Duration: <b>{{ msToTime(item.duration) }}</b>
+          <li v-if="item.formatted_duration">
+            Duration: <b>{{ item.formatted_duration }}</b>
           </li>
         </ul>
         <div v-if="item.preview_url" class="pb-4">
@@ -301,6 +198,15 @@ onBeforeUnmount(async () => {
           </li>
         </ul>
       </Card>
+    </div>
+
+    <div v-if="data.more_results" class="mt-12">
+      <button
+        @click="nextPage"
+        class="mx-auto block rounded border-2 border-gray-200/20 bg-gray-950 p-2 text-white"
+      >
+        Load more
+      </button>
     </div>
 
     <TransitionGroup tag="div">

@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiEndpoint:
       process.env.VITE_API_ENDPOINT ||
-      'https://api.impandskizzpodcast.com/api/v1',
+      'https://api.impandskizzpodcast.com/api/v2',
   },
   compatibilityDate: '2024-04-03',
   devtools: {
