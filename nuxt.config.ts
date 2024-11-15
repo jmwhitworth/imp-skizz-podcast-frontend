@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
+  css: ['~/assets/main.css'],
   app: {
     head: {
       meta: [
@@ -28,7 +29,7 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
-  modules: ['@vesp/nuxt-fontawesome', '@nuxtjs/tailwindcss'],
+  modules: ['@vesp/nuxt-fontawesome'],
   fontawesome: {
     icons: {
       solid: [
@@ -38,6 +39,12 @@ export default defineNuxtConfig({
         'mug-saucer',
       ],
       brands: ['youtube', 'spotify', 'apple', 'patreon'],
+    },
+  },
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
     },
   },
 })

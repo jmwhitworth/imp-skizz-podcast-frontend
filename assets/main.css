@@ -2,12 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* we will explain what these classes do next! */
+/* Loading spinner animation*/
 .v-enter-active,
 .v-leave-active {
   transition: opacity 250ms ease;
 }
-
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
