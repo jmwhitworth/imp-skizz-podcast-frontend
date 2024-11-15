@@ -6,12 +6,12 @@ import Loader from './Loader.vue'
 import YouTube from './YouTube.vue'
 import Spotify from './Spotify.vue'
 import Apple from './Apple.vue'
+import { faComputer } from '@fortawesome/free-solid-svg-icons'
 
 // The current route and router
 const route = useRoute()
 const router = useRouter()
 const urlQuery = reactive(route.query)
-const urlQueryTimeout = ref(null)
 
 // Pagination-related variables
 //const itemsPerPage = ref(15)
@@ -23,24 +23,21 @@ const searchQuery = ref(urlQuery.search ?? '')
 const searchInput = ref(urlQuery.search ?? '')
 const searchTimeout = ref(null)
 
-const urlWatcherTimeout = ref(null)
-const loading = ref(false)
-
 const url = computed(() => {
   const _url = new URL(import.meta.env.VITE_API_ENDPOINT + '/podcasts')
   _url.search = new URLSearchParams(route.query)
   return _url.toString()
 })
 
-const { data } = useFetch(url, { refetch: true })
+const { data, status } = await useFetch(url, { refetch: true })
+
+const isLoading = computed(() => status.value === 'pending')
 
 /**
  * Updates the URL query based on the search query and sorting order
  */
 const updateUrlQuery = async () => {
   await nextTick()
-  if (loading.value) return
-  loading.value = true
 
   const query = {
     ...(searchQuery.value.length > 0 && { search: searchQuery.value }),
@@ -49,10 +46,6 @@ const updateUrlQuery = async () => {
   }
 
   router.push({ query })
-  if (urlQueryTimeout.value) clearTimeout(urlQueryTimeout.value)
-  urlQueryTimeout.value = setTimeout(() => {
-    loading.value = false
-  }, 500)
 }
 
 /**
@@ -211,11 +204,11 @@ watch(
 
     <TransitionGroup tag="div">
       <div
-        v-if="loading"
+        v-if="isLoading"
         class="fixed left-0 top-0 h-full w-full bg-gradient-to-t from-gray-950/75"
       ></div>
       <Loader
-        :condition="loading"
+        :condition="isLoading"
         class="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"
       />
     </TransitionGroup>
