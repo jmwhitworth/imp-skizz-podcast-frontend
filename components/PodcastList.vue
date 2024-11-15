@@ -6,7 +6,6 @@ import Loader from './Loader.vue'
 import YouTube from './YouTube.vue'
 import Spotify from './Spotify.vue'
 import Apple from './Apple.vue'
-import { faComputer } from '@fortawesome/free-solid-svg-icons'
 
 // The current route and router
 const route = useRoute()
@@ -23,6 +22,21 @@ const searchQuery = ref(urlQuery.search ?? '')
 const searchInput = ref(urlQuery.search ?? '')
 const searchTimeout = ref(null)
 
+/**
+ * Updates the URL query based on the search query and sorting order
+ */
+const updateUrlQuery = async () => {
+  await nextTick()
+  const query = {
+    ...(searchQuery.value.length > 0 && { search: searchQuery.value }),
+    ...(sortOrder.value !== 'desc' && { sort: sortOrder.value }),
+    ...(currentPage.value > 1 && { page: currentPage.value }),
+  }
+  router.push({ query })
+}
+// Reset the page number on initial load
+updateUrlQuery()
+
 const url = computed(() => {
   const _url = new URL(import.meta.env.VITE_API_ENDPOINT + '/podcasts')
   _url.search = new URLSearchParams(route.query)
@@ -32,21 +46,6 @@ const url = computed(() => {
 const { data, status } = await useFetch(url, { refetch: true })
 
 const isLoading = computed(() => status.value === 'pending')
-
-/**
- * Updates the URL query based on the search query and sorting order
- */
-const updateUrlQuery = async () => {
-  await nextTick()
-
-  const query = {
-    ...(searchQuery.value.length > 0 && { search: searchQuery.value }),
-    ...(sortOrder.value !== 'desc' && { sort: sortOrder.value }),
-    ...(currentPage.value > 1 && { page: currentPage.value }),
-  }
-
-  router.push({ query })
-}
 
 /**
  * Resets the search query and sorting order
