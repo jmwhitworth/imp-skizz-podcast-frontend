@@ -1,3 +1,10 @@
+# Imp & Skizz Podcast Index
+
+This is the frontend portion of the following project: [impandskizzpodcast.com](https://impandskizzpodcast.com/)
+
+You can see the Django backend here: [https://github.com/jmwhitworth/imp-skizz-podcast](https://github.com/jmwhitworth/imp-skizz-podcast)
+
+
 # Nuxt Minimal Starter
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
