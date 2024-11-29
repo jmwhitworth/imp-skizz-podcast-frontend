@@ -17,6 +17,13 @@ export default defineNuxtConfig({
       bodyAttrs: { class: 'bg-gray-900 text-gray-100' },
     },
   },
+  scripts: {
+    registry: {
+      googleTagManager: {
+        id: 'GTM-5HHPL5MR',
+      },
+    },
+  },
   runtimeConfig: {
     apiEndpoint:
       process.env.VITE_API_ENDPOINT ||
@@ -29,7 +36,7 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
-  modules: ['@vesp/nuxt-fontawesome'],
+  modules: ['@vesp/nuxt-fontawesome', '@nuxt/scripts'],
   fontawesome: {
     icons: {
       solid: [
